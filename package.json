@@ -1,0 +1,10 @@
+{
+  "name": "hype-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "description": "ai hype man",
+  "repository": "https://github.com/amalvivek/hype-server.git",
+  "author": "Amal Vivek",
+  "private": false
+}
