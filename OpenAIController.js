@@ -6,7 +6,17 @@ const OpenAIRouter = express.Router();
 
 // Get response from Cohere
 OpenAIRouter.get('/', (req, res) => {
-    ask(req.body.input).then(r => res.send(r))
+
+    ask(req.body.input).then(async stream => {
+        // let streamedResult = "";
+        for await (const chunk of stream) {
+            // streamedResult += chunk;
+            console.log(chunk);
+            res.write(chunk)
+        }
+        res.end()
+    }).catch(e => console.log(e))
+    res.json()
 });
 
 
