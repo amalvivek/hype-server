@@ -1,5 +1,6 @@
 import express from "express";
 import CohereAgent from "./CohereAgent.mjs";
+import OpenAIRouter from "./OpenAIController.js";
 
 export default function (app) {
 
@@ -10,6 +11,8 @@ export default function (app) {
     });
 
     app.use("/cohere", CohereAgent);
+
+    app.use("/openai", OpenAIRouter)
 
     app.get('*', (req, res) => {
         res.status(404).send('<h1>error 404 not found</h1>');
