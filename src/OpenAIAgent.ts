@@ -33,7 +33,7 @@ const chain = ConversationalRetrievalQAChain.fromLLM(
     },
 )
 
-export const ask = async (input) => {
+export const ask = async (input: String) => {
     return await chain.stream({
         question: input,
     })

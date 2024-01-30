@@ -1,6 +1,6 @@
 import "dotenv/config";
-import express from "express";
-import routes from "./routes.mjs"
+import express from 'express';
+import routes from './routes.ts'
 
 
 const app = express();

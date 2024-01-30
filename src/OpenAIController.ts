@@ -1,22 +1,18 @@
 import express from 'express';
-import {ask} from "./OpenAIAgent.js";
+import {ask} from "./OpenAIAgent.ts";
 
 const OpenAIRouter = express.Router();
 
 
-// Get response from Cohere
+// Get response from ChatGPT
 OpenAIRouter.get('/', (req, res) => {
 
     ask(req.body.input).then(async stream => {
-        // let streamedResult = "";
         for await (const chunk of stream) {
-            // streamedResult += chunk;
-            console.log(chunk);
-            res.write(chunk)
+            res.write(chunk.text)
         }
         res.end()
     }).catch(e => console.log(e))
-    res.json()
 });
 
 
