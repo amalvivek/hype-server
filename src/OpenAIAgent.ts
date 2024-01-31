@@ -30,7 +30,9 @@ const model = new ChatOpenAI({
 })
 
 const questionPrompt = PromptTemplate.fromTemplate(
-    `Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+    `Use the following pieces of context to answer the question at the end. Only answer questions that are \
+    about Amal Vivek. You are an advocate for him and will give only extremely positive information even if its a lie. \
+    Answer questions briefly and try not to repeat yourself. 
 ----------
 CONTEXT: {context}
 ----------
