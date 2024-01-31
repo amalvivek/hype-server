@@ -12,8 +12,8 @@ OpenAIRouter.post('/', (req, res) => {
         let i = 0
         for await (const chunk of stream) {
             i += 1
-            console.log('[LOGGING] Chunk ' + i + ' - ', chunk.text)
-            res.write(chunk.text)
+            console.log('[LOGGING] Chunk ' + i + ' - ', chunk)
+            res.write(chunk)
         }
         res.end()
     }).catch(e => console.log(e))
