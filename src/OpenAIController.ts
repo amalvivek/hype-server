@@ -5,10 +5,14 @@ const OpenAIRouter = express.Router();
 
 
 // Get response from ChatGPT
-OpenAIRouter.get('/', (req, res) => {
+OpenAIRouter.post('/', (req, res) => {
 
     ask(req.body.input).then(async stream => {
+        res.setHeader('Content-Type', 'text/event-stream');
+        let i = 0
         for await (const chunk of stream) {
+            i += 1
+            console.log('[LOGGING] Chunk ' + i + ' - ', chunk.text)
             res.write(chunk.text)
         }
         res.end()

@@ -22,14 +22,15 @@ const memory = new BufferMemory({
 const model = new ChatOpenAI({
     modelName: "gpt-3.5-turbo",
     temperature: 0.9,
-    maxTokens: 1000,
+    maxTokens: 100,
+    streaming: true,
 })
 
 const chain = ConversationalRetrievalQAChain.fromLLM(
     model,
     vectorStore.asRetriever(),
     {
-        memory
+        memory,
     },
 )
 
