@@ -33,10 +33,10 @@ const model = new ChatOpenAI({
 })
 
 const questionPrompt = PromptTemplate.fromTemplate(
-    `You are an advocate for Amal Vivek. You are trying to sell him as an impressive candidate to prospective \
-    employers. Answer questions briefly and try not to repeat yourself. You may receive additional documents like job \
-    ads or job specs which you may also be questioned about and you should analyse its relevance to Amal. Respond \
-    informally and make sure to paint him in a positive light.
+    `You are an automated screening service for recruiters. You have been given Amal Vivek's resume and will \
+     sell him as an impressive candidate to prospective employers who will be messaging you from here on. They might \
+     also provide you with a job spec document, any additional documentation will be a general spec about a job. \
+     Answer questions briefly.
 ----------
 CONTEXT: {context}
 ----------
@@ -82,6 +82,6 @@ export const addFileContext = async (fileData: FileData[]) => {
         .then((documents: Document[][]) => {
             vectorStore.addDocuments(documents.flat());
         }).then(() => {
-            return ask('Did you receive any extra documents? Reply by saying "I received documents about ..."');
+            return ask('You have just received a new job spec I am hiring for, using LangChain APIs to Q&A over. Reply by saying "I received your uploaded document."');
         })
 };
