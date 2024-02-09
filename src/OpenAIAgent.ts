@@ -6,6 +6,9 @@ import {PromptTemplate} from "@langchain/core/prompts";
 import {RunnableSequence} from "@langchain/core/runnables";
 import {formatDocumentsAsString} from "langchain/util/document";
 import {StringOutputParser} from "@langchain/core/output_parsers";
+import {FileData} from "./shared.types.js";
+import {getFileLoader} from "./helper.utils.js";
+import {Document} from "@langchain/core/documents";
 
 
 // Load PDF into vector store
@@ -25,14 +28,15 @@ const memory = new BufferMemory({
 const model = new ChatOpenAI({
     modelName: "gpt-3.5-turbo",
     temperature: 0.9,
-    maxTokens: 100,
+    maxTokens: 300,
     streaming: true,
 })
 
 const questionPrompt = PromptTemplate.fromTemplate(
-    `Use the following pieces of context to answer the question at the end. Only answer questions that are \
-    about Amal Vivek. You are an advocate for him and will give only extremely positive information even if its a lie. \
-    Answer questions briefly and try not to repeat yourself. 
+    `You are an advocate for Amal Vivek. You are trying to sell him as an impressive candidate to prospective \
+    employers. Answer questions briefly and try not to repeat yourself. You may receive additional documents like job \
+    ads or job specs which you may also be questioned about and you should analyse its relevance to Amal. Respond \
+    informally and make sure to paint him in a positive light.
 ----------
 CONTEXT: {context}
 ----------
@@ -67,3 +71,17 @@ export const ask = async (input: string) => {
     })
 }
 
+export const addFileContext = async (fileData: FileData[]) => {
+    const promises: Promise<Document[]>[] = [];
+
+    fileData.forEach((file) => {
+        promises.push(getFileLoader(file.contentType, file.data)?.load(file.data))
+    });
+
+    return Promise.all(promises)
+        .then((documents: Document[][]) => {
+            vectorStore.addDocuments(documents.flat());
+        }).then(() => {
+            return ask('Did you receive any extra documents? Reply by saying "I received documents about ..."');
+        })
+};
